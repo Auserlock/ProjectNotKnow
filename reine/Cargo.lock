@@ -2430,15 +2430,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "43d84d1d7a6ac92673717f9f6d1518374ef257669c24ebc5ac25d5033828be58"
 
 [[package]]
-name = "projectunknown"
-version = "0.1.0"
-dependencies = [
- "iced",
- "log",
- "pretty_env_logger",
-]
-
-[[package]]
 name = "quick-xml"
 version = "0.36.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2600,6 +2591,15 @@ name = "regex-syntax"
 version = "0.8.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7a66a03ae7c801facd77a29370b4faec201768915ac14a721ba36f20bc9c209b"
+
+[[package]]
+name = "reine"
+version = "0.1.0"
+dependencies = [
+ "iced",
+ "log",
+ "pretty_env_logger",
+]
 
 [[package]]
 name = "renderdoc-sys"
