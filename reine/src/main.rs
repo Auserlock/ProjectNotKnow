@@ -1,7 +1,7 @@
 use iced::widget::*;
 use iced::window::Settings;
 use iced::{Length, Size};
-use log::{error, info};
+use log::{error, info, warn};
 use std::process::Command;
 
 #[derive(Debug, Clone)]
@@ -46,15 +46,33 @@ impl Reine {
                 self.digests.pop();
             }
             Message::Submit => {
-                let text = format!("\"{}\"", self.text.text());
-                let author = format!("\"{}\"", self.author.text());
-                let source = format!("\"{}\"", self.source.text());
-                let page = self.page.text();
+                let mut text = format!("\"{}\"", self.text.text());
+                text.retain(|c| !c.is_whitespace());
+                let mut author = format!("\"{}\"", self.author.text());
+                author.retain(|c| !c.is_whitespace());
+                let mut source = format!("\"{}\"", self.source.text());
+                source.retain(|c| !c.is_whitespace());
+                let mut page = self.page.text();
+                page.retain(|c| c.is_numeric());
                 let digests = self
                     .digests
                     .iter()
-                    .map(|digest| digest.text())
+                    .map(|digest| {
+                        let mut digest = digest.text();
+                        digest.retain(|c| !c.is_whitespace());
+                        digest
+                    })
                     .collect::<Vec<_>>();
+
+                info!("Executing insert command with the following arguments:");
+                info!(
+                    "{} {} {} {} {}",
+                    text,
+                    author,
+                    source,
+                    page,
+                    digests.join(" ")
+                );
 
                 let insert = Command::new("insert")
                     .arg(text)
@@ -65,7 +83,22 @@ impl Reine {
                     .output();
 
                 match insert {
-                    Ok(output) => info!("{}", String::from_utf8_lossy(&output.stdout)),
+                    Ok(output) => {
+                        error!("{}", String::from_utf8_lossy(&output.stderr));
+                        info!("{}", String::from_utf8_lossy(&output.stdout));
+                        match output.status.code() {
+                            Some(code) => {
+                                if code == 0 {
+                                    info!("The process was successful with code 0");
+                                } else {
+                                    error!("The process failed with code {}", code);
+                                }
+                            }
+                            None => {
+                                warn!("The process was terminated by a signal");
+                            }
+                        }
+                    }
                     Err(e) => {
                         error!("{}", e);
                     }
