@@ -43,15 +43,63 @@ impl Reine {
                 self.digests.push(text_editor::Content::default());
             }
             Message::DeleteDigest => {
+                if self.digests.len() == 1 {
+                    warn!("There is only one digest, it cannot be deleted");
+                    return;
+                }
                 self.digests.pop();
             }
             Message::Submit => {
-                let mut text = format!("\"{}\"", self.text.text());
-                text.retain(|c| !c.is_whitespace());
+                let mut need_executing = true;
+
+                let mut raw_text = self.text.text();
+                raw_text.retain(|c| !c.is_whitespace());
+                if raw_text.is_empty() {
+                    warn!("The text is empty");
+                    need_executing = false;
+                }
+
+                let raw_page = self.page.text();
+                if raw_page.contains(|c: char| !c.is_numeric()) || {
+                    let mut raw_page = self.page.text();
+                    raw_page.retain(|c| !c.is_whitespace());
+                    raw_page.is_empty()
+                } {
+                    warn!("The page is empty or contains non-numeric characters");
+                    need_executing = false;
+                }
+
+                let mut raw_source = self.source.text();
+                raw_source.retain(|c| !c.is_whitespace());
+                if raw_source.is_empty() {
+                    warn!("The source is empty");
+                    need_executing = false;
+                }
+
+                if self.digests.is_empty() {
+                    warn!("The digests are empty");
+                    need_executing = false;
+                } else {
+                    for (i, digest) in self.digests.iter().enumerate() {
+                        let mut raw_digest = digest.text();
+                        raw_digest.retain(|c| !c.is_whitespace());
+                        if raw_digest.is_empty() {
+                            warn!("The digest {} is empty", i);
+                            need_executing = false;
+                        }
+                    }
+                }
+
+                if need_executing == false {
+                    warn!("Some fields are empty, the process will not be executed");
+                    return;
+                }
+
+                let text = format!("\"{}\"", self.text.text());
                 let mut author = format!("\"{}\"", self.author.text());
-                author.retain(|c| !c.is_whitespace());
+                author.retain(|c| c != '\n' && c != '\r' && c != '\t');
                 let mut source = format!("\"{}\"", self.source.text());
-                source.retain(|c| !c.is_whitespace());
+                source.retain(|c| c != '\n' && c != '\r' && c != '\t');
                 let mut page = self.page.text();
                 page.retain(|c| c.is_numeric());
                 let digests = self

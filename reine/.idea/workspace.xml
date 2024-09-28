@@ -120,7 +120,7 @@
       <workItem from="1727541178425" duration="392000" />
       <workItem from="1727541573391" duration="213000" />
       <workItem from="1727541821630" duration="75000" />
-      <workItem from="1727541922257" duration="4086000" />
+      <workItem from="1727541922257" duration="5564000" />
     </task>
     <task id="LOCAL-00001" summary="feat: impl the frontend">
       <option name="closed" value="true" />
@@ -146,7 +146,23 @@
       <option name="project" value="LOCAL" />
       <updated>1727544893128</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="feat: optimize the log">
+      <option name="closed" value="true" />
+      <created>1727546062387</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1727546062387</updated>
+    </task>
+    <task id="LOCAL-00005" summary="feat: optimize the log">
+      <option name="closed" value="true" />
+      <created>1727546216550</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1727546216550</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -167,6 +183,7 @@
     <MESSAGE value="feat: impl the frontend" />
     <MESSAGE value="chore: change the frontend name" />
     <MESSAGE value="feat: optimize the ui" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: optimize the ui" />
+    <MESSAGE value="feat: optimize the log" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: optimize the log" />
   </component>
 </project>
