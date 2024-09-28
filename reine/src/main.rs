@@ -1,5 +1,6 @@
 use iced::widget::*;
-use iced::Length;
+use iced::window::Settings;
+use iced::{Length, Size};
 use log::{error, info};
 use std::process::Command;
 
@@ -15,7 +16,7 @@ enum Message {
     DigestEditor(usize, text_editor::Action),
 }
 
-struct Counter {
+struct Reine {
     text: text_editor::Content,
     author: text_editor::Content,
     source: text_editor::Content,
@@ -23,7 +24,7 @@ struct Counter {
     digests: Vec<text_editor::Content>,
 }
 
-impl Default for Counter {
+impl Default for Reine {
     fn default() -> Self {
         Self {
             text: text_editor::Content::default(),
@@ -35,7 +36,7 @@ impl Default for Counter {
     }
 }
 
-impl Counter {
+impl Reine {
     fn update(&mut self, message: Message) {
         match message {
             Message::AddDigest => {
@@ -104,39 +105,96 @@ impl Counter {
             horizontal_space().width(Length::Fixed(20.0)),
             button("Delete Digest").on_press(Message::DeleteDigest),
         ];
-        let mut children = vec![
+
+        let edit_text = vec![
             vertical_space().height(Length::Fixed(20.0)).into(),
+            text("Text").into(),
+            vertical_space().height(Length::Fixed(10.0)).into(),
             text_editor(&self.text)
                 .on_action(Message::TextEditor)
                 .placeholder("Write a text here")
+                .height(Length::Fill)
                 .into(),
+        ];
+
+        let text_column: Column<Message> = Column::with_children(edit_text);
+
+        let source_column = Column::with_children(vec![
             vertical_space().height(Length::Fixed(20.0)).into(),
+            text("Author").into(),
+            vertical_space().height(Length::Fixed(5.0)).into(),
             text_editor(&self.author)
                 .on_action(Message::AuthorEditor)
                 .placeholder("Write an author here")
+                .height(Length::Fill)
                 .into(),
-            vertical_space().height(Length::Fixed(20.0)).into(),
-            text_editor(&self.source)
-                .on_action(Message::SourceEditor)
-                .placeholder("Write a source here")
-                .into(),
-            vertical_space().height(Length::Fixed(20.0)).into(),
+            vertical_space().height(Length::Fixed(5.0)).into(),
+            text("Page").into(),
+            vertical_space().height(Length::Fixed(5.0)).into(),
             text_editor(&self.page)
                 .on_action(Message::PageEditor)
                 .placeholder("Write a page here")
+                .height(Length::Fill)
                 .into(),
-            vertical_space().height(Length::Fixed(20.0)).into(),
+            vertical_space().height(Length::Fixed(5.0)).into(),
+            text("Source").into(),
+            vertical_space().height(Length::Fixed(5.0)).into(),
+            text_editor(&self.source)
+                .on_action(Message::SourceEditor)
+                .placeholder("Write a source here")
+                .height(Length::Fill)
+                .into(),
+        ]);
+
+        let input_row = Row::with_children(vec![
+            horizontal_space().width(Length::Fixed(20.0)).into(),
+            text_column.into(),
+            horizontal_space().width(Length::Fixed(20.0)).into(),
+            source_column.into(),
+            horizontal_space().width(Length::Fixed(20.0)).into(),
+        ])
+        .height(Length::FillPortion(1));
+
+        let mut children = vec![
             buttons.into(),
             vertical_space().height(Length::Fixed(20.0)).into(),
         ];
 
-        children.extend(self.digests.iter().enumerate().map(|(index, digest)| {
-            text_editor(digest)
-                .on_action(move |action| Message::DigestEditor(index, action))
-                .placeholder("Write a digest here")
-                .into()
-        }));
+        let mut digests_left = Vec::new();
+        let mut digests_right = Vec::new();
 
+        self.digests.iter().enumerate().for_each(|(index, digest)| {
+            if index % 2 == 0 {
+                digests_left.push(
+                    text_editor(digest)
+                        .on_action(move |action| Message::DigestEditor(index, action))
+                        .placeholder("Write a digest here")
+                        .into(),
+                );
+                digests_left.push(vertical_space().height(Length::Fixed(10.0)).into());
+            } else {
+                digests_right.push(
+                    text_editor(digest)
+                        .on_action(move |action| Message::DigestEditor(index, action))
+                        .placeholder("Write a digest here")
+                        .into(),
+                );
+                digests_right.push(vertical_space().height(Length::Fixed(10.0)).into());
+            }
+        });
+
+        let digests_row = Row::with_children(vec![
+            Column::with_children(digests_left).into(),
+            horizontal_space().width(Length::Fixed(20.0)).into(),
+            Column::with_children(digests_right).into(),
+        ]);
+
+        children.push(text("Digests").into());
+        children.push(vertical_space().height(Length::Fixed(10.0)).into());
+
+        children.push(digests_row.into());
+
+        children.push(vertical_space().height(Length::Fixed(20.0)).into());
         children.push(button("Submit").on_press(Message::Submit).into());
 
         let children = vec![
@@ -145,13 +203,21 @@ impl Counter {
             horizontal_space().width(Length::Fixed(20.0)).into(),
         ];
 
-        column.push(Row::with_children(children)).into()
+        column
+            .push(input_row)
+            .push(vertical_space().height(Length::Fixed(20.0)))
+            .push(Row::with_children(children).height(Length::FillPortion(2)))
+            .into()
     }
 }
 
 fn main() {
     pretty_env_logger::init();
-    iced::application("counter", Counter::update, Counter::view)
+    iced::application("reine", Reine::update, Reine::view)
+        .window(Settings {
+            min_size: Some(Size::new(800.0, 600.0)),
+            ..Default::default()
+        })
         .run()
         .unwrap();
 }
