@@ -11,10 +11,13 @@ const std::string path = "/home/arch_/Work/ProjectNotKnow/config/db_config.json"
 int getSummaryID(std::shared_ptr<sql::Statement> &stmnt, sql::SQLString summary)
 {
     int ret = -1;
+    std::string Query{std::string{"SELECT id FROM entry.summaries WHERE summary = "} + '\"' + static_cast<std::string>(summary) + '\"'};
+    const char *DQuery = Query.c_str();
+
     try
     {
         std::unique_ptr<sql::ResultSet> res(
-            stmnt->executeQuery("SELECT id FROM entry.summaries WHERE summary = ?"));
+            stmnt->executeQuery(DQuery));
 
         if (res->next())
         {
@@ -79,15 +82,15 @@ void addMedium(std::shared_ptr<sql::PreparedStatement> &stmnt, int passage, int 
 
 int main(int argc, char *argv[])
 {
-    // if (argc <= 5)
-    // {
-    //     cerr << "用法: " << argv[0] << " <文段> <作者> <出处> <页数> <摘要>..." << std::endl;
-    //     return -1;
-    // }
-    // const std::string str = std::string{"insert_passage "} + '\"' + argv[1] + '\"' + ' ' + '\"' + argv[2] + '\"' + ' ' + '\"' + argv[3] + '\"' + ' ' + argv[4];
-    // char *command = const_cast<char *>(str.c_str());
-    // int res = system(command);
-    // res = WEXITSTATUS(res);
+    if (argc <= 5)
+    {
+        cerr << "用法: " << argv[0] << " <文段> <作者> <出处> <页数> <摘要>..." << std::endl;
+        return -1;
+    }
+    const std::string str = std::string{"insert_passage "} + '\"' + argv[1] + '\"' + ' ' + '\"' + argv[2] + '\"' + ' ' + '\"' + argv[3] + '\"' + ' ' + argv[4];
+    char *command = const_cast<char *>(str.c_str());
+    int res = system(command);
+    res = WEXITSTATUS(res);
 
     json config;
     db_config(config, path);
@@ -109,25 +112,26 @@ int main(int argc, char *argv[])
 
             std::unique_ptr<sql::Connection> conn(driver->connect(URL, properties));
 
-            // std::shared_ptr<sql::PreparedStatement> stmnt(
-            //     conn->prepareStatement(
-            //         "INSERT INTO entry.summaries(summary) VALUES (?)"));
+            std::shared_ptr<sql::PreparedStatement> stmnt(
+                conn->prepareStatement(
+                    "INSERT INTO entry.summaries(summary) VALUES (?)"));
 
             std::shared_ptr<sql::Statement> stmnt_summary(
                 conn->createStatement());
 
-            cout << getSummaryID(stmnt_summary, summary);
-            // std::shared_ptr<sql::PreparedStatement> stmnt_medium(
-            //     conn->prepareStatement(
-            //         "INSERT INTO entry.passage_summaries(passage_id,summary_id) VALUES (?, ?)"));
+            int id_summary = getSummaryID(stmnt_summary, summary);
 
-            // int result = -1;
-            // if ((result = getSummaryID(stmnt_summary, summary)) != -1)
-            //     ;
-            // else
-            //     result = addSummary(stmnt, summary);
+            std::shared_ptr<sql::PreparedStatement> stmnt_medium(
+                conn->prepareStatement(
+                    "INSERT INTO entry.passage_summaries(passage_id,summary_id) VALUES (?, ?)"));
 
-            // addMedium(stmnt_medium, res, result);
+            int result = -1;
+            if ((result = getSummaryID(stmnt_summary, summary)) != -1)
+                ;
+            else
+                result = addSummary(stmnt, summary);
+
+            addMedium(stmnt_medium, res, result);
 
             conn->close();
         }
