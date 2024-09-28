@@ -47,6 +47,15 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
+	for (int i = 1; i < 4; i++)
+	{
+		if (strcmp(argv[1], "") == 0)
+		{
+			std::cerr << "用法: " << argv[0] << " <文段> <作者> <出处> <页数> " << "不能为空！" << std::endl;
+			return -1;
+		}
+	}
+
 	json config;
 	db_config(config, path);
 
