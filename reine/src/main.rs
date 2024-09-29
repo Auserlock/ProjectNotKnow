@@ -110,10 +110,10 @@ impl Reine {
                     return;
                 }
 
-                let text = format!("\"{}\"", self.text.text());
-                let mut author = format!("\"{}\"", self.author.text());
+                let text = format!("{}", self.text.text());
+                let mut author = format!("{}", self.author.text());
                 author.retain(|c| c != '\n' && c != '\r' && c != '\t');
-                let mut source = format!("\"{}\"", self.source.text());
+                let mut source = format!("{}", self.source.text());
                 source.retain(|c| c != '\n' && c != '\r' && c != '\t');
                 let digests = self
                     .digests
