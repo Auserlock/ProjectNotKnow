@@ -2,6 +2,7 @@ use iced::widget::*;
 use iced::window::Settings;
 use iced::{Length, Size};
 use log::{error, info, warn};
+use std::ffi::OsStr;
 use std::process::Command;
 
 #[derive(Debug, Clone)]
@@ -59,15 +60,29 @@ impl Reine {
                     need_executing = false;
                 }
 
-                let raw_page = self.page.text();
-                if raw_page.contains(|c: char| !c.is_numeric()) || {
-                    let mut raw_page = self.page.text();
-                    raw_page.retain(|c| !c.is_whitespace());
-                    raw_page.is_empty()
-                } {
-                    warn!("The page is empty or contains non-numeric characters");
+                let pages = self
+                    .page
+                    .text()
+                    .split_whitespace()
+                    .map(|s| s.to_string())
+                    .collect::<Vec<_>>();
+
+                let page = if pages.len() > 1 {
+                    warn!("The page has more than one word");
                     need_executing = false;
-                }
+                    0
+                } else {
+                    let page = pages[0].parse::<usize>();
+                    let page = match page {
+                        Ok(page) => page,
+                        Err(e) => {
+                            warn!("The page is not a number: {}", e);
+                            need_executing = false;
+                            0
+                        }
+                    };
+                    page
+                };
 
                 let mut raw_source = self.source.text();
                 raw_source.retain(|c| !c.is_whitespace());
@@ -100,8 +115,6 @@ impl Reine {
                 author.retain(|c| c != '\n' && c != '\r' && c != '\t');
                 let mut source = format!("\"{}\"", self.source.text());
                 source.retain(|c| c != '\n' && c != '\r' && c != '\t');
-                let mut page = self.page.text();
-                page.retain(|c| c.is_numeric());
                 let digests = self
                     .digests
                     .iter()
@@ -126,7 +139,7 @@ impl Reine {
                     .arg(text)
                     .arg(author)
                     .arg(source)
-                    .arg(page)
+                    .arg(OsStr::new(&page.to_string()))
                     .args(digests)
                     .output();
 

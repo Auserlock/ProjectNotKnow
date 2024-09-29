@@ -4,6 +4,6 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-iced = { git="https://github.com/iced-rs/iced.git" , features = ["auto-detect-theme"]}
+iced = { git = "https://github.com/iced-rs/iced.git" , features = ["auto-detect-theme"]}
 pretty_env_logger = "0.5.0"
 log = "0.4.22"
