@@ -1,6 +1,6 @@
 use crate::views::insert_view::InsertView;
 use crate::views::CurrentView;
-use crate::View;
+use crate::views::View;
 use eframe::epaint::FontFamily;
 use eframe::Frame;
 use egui::*;

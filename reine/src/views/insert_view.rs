@@ -1,4 +1,4 @@
-use crate::View;
+use crate::views::View;
 use egui::*;
 use log::{error, info, warn};
 use std::process::Command;
