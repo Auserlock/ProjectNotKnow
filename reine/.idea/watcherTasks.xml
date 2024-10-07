@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectTasksOptions">
     <enabled-global>
-      <option value="rustfmt" />
+      <option value="clang_format" />
+      <option value="dart_format" />
     </enabled-global>
   </component>
 </project>
