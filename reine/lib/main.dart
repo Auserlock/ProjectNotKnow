@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reine/notifiers/global_notifiers.dart';
@@ -6,6 +8,7 @@ import 'package:reine/views/search.dart';
 import 'package:reine/views/settings.dart';
 import 'package:window_manager/window_manager.dart';
 
+import 'notifiers/preferences.dart';
 import 'views/views.dart';
 
 Future<void> main() async {
@@ -15,7 +18,8 @@ Future<void> main() async {
 
   runApp(
     ChangeNotifierProvider<GlobalNotifiers>(
-        create: (context) => GlobalNotifiers(), child: const MyApp()),
+        create: (context) => GlobalNotifiers()..initApp(),
+        child: const MyApp()),
   );
 }
 
@@ -56,6 +60,19 @@ class MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     var globalNotifier = Provider.of<GlobalNotifiers>(context);
+
+    var backgroundColor =
+        globalNotifier.currentBackgroundMode == BackgroundMode.pureColor
+            ? globalNotifier.currentBackgroundColor
+            : null;
+
+    var backgroundImage =
+        globalNotifier.currentBackgroundMode == BackgroundMode.image
+            ? DecorationImage(
+                image: globalNotifier.currentBackgroundImage,
+                fit: globalNotifier.currentBackgroundImageFit,
+              )
+            : null;
 
     return Scaffold(
       appBar: AppBar(
@@ -111,22 +128,45 @@ class MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const Padding(padding: EdgeInsets.all(16.0)),
-            IndexedStack(
-              index: globalNotifier.currentPage.index,
-              children: const [
-                InsertView(),
-                SearchView(),
-                SettingsView(),
+      backgroundColor: backgroundColor,
+      body: Stack(
+        children: [
+          Container(
+            decoration: backgroundImage != null
+                ? BoxDecoration(image: backgroundImage)
+                : null,
+          ),
+          if (backgroundImage != null)
+            Positioned.fill(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(
+                    sigmaX: globalNotifier.currentBackgroundImageBlurriness,
+                    sigmaY: globalNotifier.currentBackgroundImageBlurriness),
+                child: Container(
+                  color: Theme.of(context).scaffoldBackgroundColor.withOpacity(
+                      1 - globalNotifier.currentBackgroundImageOpacity),
+                ),
+              ),
+            ),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const Padding(padding: EdgeInsets.all(16.0)),
+                IndexedStack(
+                  alignment: Alignment.center,
+                  index: globalNotifier.currentPage.index,
+                  children: const [
+                    InsertView(),
+                    SearchView(),
+                    SettingsView(),
+                  ],
+                ),
+                const Padding(padding: EdgeInsets.all(16.0)),
               ],
             ),
-            const Padding(padding: EdgeInsets.all(16.0)),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

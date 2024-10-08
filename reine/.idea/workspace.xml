@@ -4,22 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="16e2d643-9b44-424d-bf56-b59138509783" name="更改" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/frontend.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/watcherTasks.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/watcherTasks.xml" afterDir="false" />
+    <list default="true" id="16e2d643-9b44-424d-bf56-b59138509783" name="更改" comment="chore: switch to flutter">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cargo.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cargo.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/fonts/PingFangSC-Regular.otf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/fonts/SF-Mono-Regular.otf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/fonts/SF-Pro-Display-Regular.otf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/insert_view.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/mod.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/bg.PNG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/notifiers/global_notifiers.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/notifiers/global_notifiers.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/notifiers/theme_notifier.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/views/settings.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/views/settings.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/macos/Flutter/GeneratedPluginRegistrant.swift" beforeDir="false" afterPath="$PROJECT_DIR$/macos/Flutter/GeneratedPluginRegistrant.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/macos/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/macos/Podfile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,7 +63,7 @@
     "git-widget-placeholder": "main",
     "io.flutter.reload.alreadyRun": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/chenyang/something/ProjectNotKnow/reine",
+    "last_opened_file_path": "/Users/chenyang/something/ProjectNotKnow/reine/assets",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
@@ -79,7 +74,11 @@
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/assets" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/assets/images" />
       <recent name="$PROJECT_DIR$/lib/views" />
     </key>
   </component>
@@ -116,12 +115,25 @@
       <workItem from="1728122399007" duration="7514000" />
       <workItem from="1728138523550" duration="9529000" />
       <workItem from="1728225350146" duration="5173000" />
-      <workItem from="1728299402078" duration="3676000" />
+      <workItem from="1728299402078" duration="26635000" />
     </task>
+    <task id="LOCAL-00001" summary="chore: switch to flutter">
+      <option name="closed" value="true" />
+      <created>1728303395496</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1728303395496</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="chore: switch to flutter" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore: switch to flutter" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
